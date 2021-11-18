@@ -2,6 +2,8 @@ import json
 import requests
 
 
+MAX_BLOCK = 99999999
+
 def get_api_details() -> tuple:
 
     with open("./data/config.json", mode="r", encoding="utf-8") as file:
@@ -24,10 +26,15 @@ def get_ingest_parameters() -> tuple:
     return batch_size, iteration_limit
 
 
-def get_transactions(address: str, start_block: int = 0, end_block: int = 99999999) -> dict:
+def get_transactions(
+    address: str,
+    start_block: int = 0,
+    end_block: int = MAX_BLOCK,
+    page: int = 1
+) -> dict:
 
     api_url, api_key = get_api_details()
-    batch_size, _, _ = get_ingest_parameters()
+    batch_size, _ = get_ingest_parameters()
 
     parameters = {
         "module": "account",
@@ -35,7 +42,7 @@ def get_transactions(address: str, start_block: int = 0, end_block: int = 999999
         "address": address,
         "startblock": start_block,
         "endblock": end_block,
-        "page": 1,
+        "page": page,
         "offset": batch_size,
         "sort": "asc",
         "apikey": api_key
@@ -49,7 +56,12 @@ def get_transactions(address: str, start_block: int = 0, end_block: int = 999999
     return response
 
 
-def get_token_transfers(address: str, start_block: int = 0, end_block: int = 99999999) -> dict:
+def get_token_transfers(
+    address: str,
+    start_block: int = 0,
+    end_block: int = MAX_BLOCK,
+    page: int = 1
+) -> dict:
 
     api_url, api_key = get_api_details()
     batch_size, _ = get_ingest_parameters()
@@ -60,7 +72,7 @@ def get_token_transfers(address: str, start_block: int = 0, end_block: int = 999
         "contractaddress": address,
         "startblock": start_block,
         "endblock": end_block,
-        "page": 1,
+        "page": page,
         "offset": batch_size,
         "sort": "asc",
         "apikey": api_key
