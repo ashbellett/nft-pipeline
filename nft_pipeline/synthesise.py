@@ -34,6 +34,10 @@ def persist_data(data: pd.DataFrame, collection: str, label: str):
         f'./data/{collection}/{label}.parquet',
         engine="pyarrow"
     )
+    # data.to_csv(
+    #     f'./data/{collection}/{label}.csv',
+    #     index=False
+    # )
 
 
 def clean_data():
